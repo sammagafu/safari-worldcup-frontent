@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 400" preserveAspectRatio="xMidYMax slice">
+  <defs>
+    <linearGradient id="hero-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d0b5c;stop-opacity:0.04" />
+      <stop offset="50%" style="stop-color:#1a52ff;stop-opacity:0.06" />
+      <stop offset="100%" style="stop-color:#0d0b5c;stop-opacity:0.03" />
+    </linearGradient>
+  </defs>
+  <path fill="url(#hero-grad)" d="M0,120 Q360,80 720,140 T1440,100 L1440,400 L0,400 Z"/>
+  <path fill="url(#hero-grad)" d="M0,220 Q480,180 960,240 T1440,200 L1440,400 L0,400 Z" opacity="0.6"/>
+</svg>

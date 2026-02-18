@@ -1,0 +1,338 @@
+@import "tailwindcss";
+@import "./fonts/stylesheet.css";
+@config "../../tailwind.config.js";
+/* Explicit content paths so Tailwind v4 finds Vue/HTML (paths relative to this file) */
+@source "../views";
+@source "../components";
+@source "../App.vue";
+@source "../../index.html";
+
+/* Safari World Cup – branded design (blue theme only, no dark/light toggle) */
+@theme {
+  --font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Rawer', ui-sans-serif, system-ui, sans-serif;
+
+  /* Brand */
+  --color-safari-light-blue: #1a52ff;
+  --color-safari-dark-blue: #0d0b5c;
+  --color-safari-red: #ed1c24;
+  --color-safari-black: #000000;
+  --color-safari-white: #ffffff;
+  --color-die-line-spot: #ff00ff;
+
+  /* Branded UI – Safari blue (safari-dark-blue base, safari-light-blue accent) */
+  --color-surface: #0d0b5c;
+  --color-surface-elevated: #151278;
+  --color-border-subtle: rgba(255, 255, 255, 0.12);
+  --color-border-default: rgba(255, 255, 255, 0.2);
+  --color-text-primary: #f1f5f9;
+  --color-text-secondary: #cbd5e1;
+  --color-text-muted: #94a3b8;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.06), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+}
+
+@import './base.css';
+
+#app {
+  min-height: 100vh;
+  min-height: 100dvh;
+  font-weight: inherit;
+}
+
+/* Mobile-first: safe area for notched devices */
+.safe-area-inset-top { padding-top: env(safe-area-inset-top, 0); }
+.safe-area-inset-bottom { padding-bottom: env(safe-area-inset-bottom, 0); }
+.safe-area-inset-left { padding-left: env(safe-area-inset-left, 0); }
+.safe-area-inset-right { padding-right: env(safe-area-inset-right, 0); }
+
+/* Corporate link */
+a {
+  text-decoration: none;
+  color: var(--safari-light-blue);
+  transition: color 0.2s ease;
+}
+a:hover { color: var(--safari-light-blue); }
+a:focus-visible {
+  outline: 2px solid var(--safari-light-blue);
+  outline-offset: 2px;
+}
+
+/* Focus ring for interactive elements */
+button:focus-visible,
+input:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid var(--safari-light-blue);
+  outline-offset: 2px;
+}
+
+/* Rawer for headings only */
+h1, h2, h3, h4, h5, h6, .font-display, [class*="heading"], .fp-heading {
+  font-family: 'Rawer', ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+}
+
+/* Hero landing: button and hover utilities */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 17px;
+  font-weight: 600;
+  font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  background: var(--safari-red);
+  color: white;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07);
+  transition: background 0.2s, transform 0.2s;
+}
+.btn-primary:hover {
+  background: rgba(237, 28, 36, 0.9);
+  transform: translateY(-2px);
+}
+.btn-white {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 17px;
+  font-weight: 600;
+  font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  background: #fff;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+  transition: border-color 0.2s, color 0.2s, transform 0.2s;
+}
+.btn-white:hover {
+  border-color: #1a52ff;
+  color: #1a52ff;
+  transform: translateY(-2px);
+}
+.hover-up-2:hover {
+  transform: translateY(-2px);
+}
+.hover-up-5:hover {
+  transform: translateY(-4px);
+}
+
+/* Flowbite-style nav */
+.nav-flowbite {
+  transition: box-shadow 0.2s;
+}
+.nav-link {
+  transition: color 0.2s, background-color 0.2s;
+}
+.btn-accent {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  color: var(--safari-dark-blue);
+  border: 1px solid rgba(13, 11, 92, 0.3);
+  background: transparent;
+  transition: border-color 0.2s, color 0.2s, transform 0.2s;
+}
+.btn-accent:hover {
+  border-color: var(--safari-dark-blue);
+  color: var(--safari-dark-blue);
+  transform: translateY(-2px);
+}
+
+/* Compact nav buttons for header */
+.nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.nav-btn-accent {
+  color: var(--safari-dark-blue);
+  border: 1px solid rgba(13, 11, 92, 0.3);
+  background: transparent;
+}
+.nav-btn-accent:hover {
+  border-color: var(--safari-dark-blue);
+}
+.nav-btn-primary {
+  background: var(--safari-red);
+  color: white;
+  border: 1px solid transparent;
+}
+.nav-btn-primary:hover {
+  background: rgba(237, 28, 36, 0.9);
+}
+
+/* Mobile menu */
+.navbar-menu {
+  transition: opacity 0.3s, visibility 0.3s;
+}
+.navbar-menu:not(.hidden) {
+  opacity: 1;
+  visibility: visible;
+}
+.navbar-backdrop {
+  transition: opacity 0.3s;
+}
+.min-w-200 {
+  min-width: 200px;
+}
+
+@media (min-width: 1024px) {
+  #app {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+}
+
+/* Fantasy panel: team / transfer / points (dark UI like reference) */
+.fantasy-panel {
+  --fp-bg: #0f0f1a;
+  --fp-bg-elevated: #1a1a2e;
+  --fp-bg-surface: #252538;
+  --fp-border: rgba(255, 255, 255, 0.1);
+  --fp-text: #ffffff;
+  --fp-text-secondary: rgba(255, 255, 255, 0.85);
+  --fp-text-muted: rgba(255, 255, 255, 0.6);
+  --fp-accent: #8b5cf6;
+  --fp-accent-hover: #a78bfa;
+  --fp-red: #ed1c24;
+  --fp-blue: #1a52ff;
+  background: var(--fp-bg);
+  color: var(--fp-text);
+}
+
+.fantasy-panel .fp-heading {
+  color: var(--fp-text);
+  font-weight: 700;
+  font-size: 1.125rem;
+  font-family: 'Rawer', ui-sans-serif, system-ui, sans-serif;
+}
+
+.fantasy-panel .fp-subheading {
+  color: var(--fp-text-secondary);
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+}
+
+.fantasy-panel .fp-pill {
+  background: var(--fp-accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+}
+
+.fantasy-panel .fp-input,
+.fantasy-panel .fp-select {
+  background: var(--fp-bg-surface);
+  border: 1px solid var(--fp-border);
+  color: var(--fp-text);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+}
+
+.fantasy-panel .fp-input::placeholder {
+  color: var(--fp-text-muted);
+}
+
+.fantasy-panel .fp-input:focus,
+.fantasy-panel .fp-select:focus {
+  outline: none;
+  border-color: var(--fp-accent);
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.25);
+}
+
+/* Pitch view – sizes via Tailwind theme (16 = 4rem, 18 = 4.5rem, 20 = 5rem) */
+.fantasy-pitch {
+  background: linear-gradient(180deg, #166534 0%, #15803d 50%, #166534 100%);
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  position: relative;
+  min-height: 20rem; /* 320px = Tailwind 80 */
+}
+
+.fantasy-pitch-lines {
+  position: absolute;
+  inset: 1rem;
+  border-width: 2px;
+  border-style: solid;
+  border-color: rgba(255, 255, 255, 0.35);
+  border-radius: var(--radius-md);
+  pointer-events: none;
+}
+
+.fantasy-player-card {
+  background: var(--fp-bg-elevated);
+  border: 1px solid var(--fp-border);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem;
+  text-align: center;
+  min-width: 4rem;   /* 64px */
+  position: relative;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+@media (min-width: 640px) {
+  .fantasy-player-card {
+    border-radius: var(--radius-md);
+    padding: 0.5rem;
+    min-width: 4.5rem; /* 72px */
+  }
+}
+
+.fantasy-player-card:hover {
+  border-color: var(--fp-accent);
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+}
+
+.fantasy-player-card .jersey {
+  width: 1.75rem;   /* 28px */
+  height: 1.75rem;
+  margin: 0 auto 0.125rem;
+  background: var(--fp-bg-surface);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.5625rem; /* 9px */
+  color: var(--fp-text-muted);
+}
+@media (min-width: 640px) {
+  .fantasy-player-card .jersey {
+    width: 2.25rem;  /* 36px */
+    height: 2.25rem;
+    margin: 0 auto 0.25rem;
+    font-size: 0.625rem; /* 10px = theme 2.5xs */
+  }
+}
+
+.fantasy-player-card .name { font-size: 0.75rem; font-weight: 600; color: var(--fp-text); }
+.fantasy-player-card .meta { font-size: 0.65rem; color: var(--fp-text-muted); }
+.fantasy-player-card .points { font-size: 0.75rem; font-weight: 700; color: var(--fp-blue); }
+.fantasy-player-card .price { font-size: 0.65rem; color: var(--fp-text-secondary); }

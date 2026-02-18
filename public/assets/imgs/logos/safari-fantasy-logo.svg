@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 40" fill="none">
+  <circle cx="20" cy="20" r="14" stroke="#0d0b5c" stroke-width="2.5" fill="none"/>
+  <path d="M20 8v24M8 20h24" stroke="#0d0b5c" stroke-width="2" stroke-linecap="round"/>
+  <path d="M12 12l16 16M28 12L12 28" stroke="#0d0b5c" stroke-width="1.5" stroke-linecap="round"/>
+  <text x="42" y="26" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0d0b5c">Safari Fantasy</text>
+</svg>

@@ -1,0 +1,76 @@
+/* Safari World Cup brand palette (CMYK → HEX for web) */
+:root {
+  /* Brand primaries */
+  --safari-light-blue: #1a52ff;   /* 90/68/0/0 – Pantone 2728C */
+  --safari-dark-blue: #0d0b5c;   /* 100/95/5/39 – Pantone 2758C */
+  --safari-red: #ed1c24;         /* 0/100/100/0 – Pantone 485C */
+  --safari-black: #000000;       /* 0/0/0/100 */
+  --safari-white: #ffffff;       /* 0/0/0/0 */
+  --die-line-spot: #ff00ff;      /* 0/100/0/0 – print die line */
+
+  /* Semantic aliases */
+  --vt-c-white: var(--safari-white);
+  --vt-c-white-soft: #f5f5f5;
+  --vt-c-white-mute: #eeeeee;
+
+  --vt-c-black: var(--safari-black);
+  --vt-c-black-soft: #1a1a1a;
+  --vt-c-black-mute: #262626;
+
+  --vt-c-divider-light-1: rgba(0, 0, 0, 0.12);
+  --vt-c-divider-light-2: rgba(0, 0, 0, 0.08);
+  --vt-c-divider-dark-1: rgba(255, 255, 255, 0.15);
+  --vt-c-divider-dark-2: rgba(255, 255, 255, 0.1);
+
+  --vt-c-text-light-1: var(--safari-dark-blue);
+  --vt-c-text-light-2: rgba(13, 11, 92, 0.7);
+  --vt-c-text-dark-1: var(--safari-white);
+  --vt-c-text-dark-2: rgba(255, 255, 255, 0.85);
+}
+
+/* Semantic colors – branded Safari blue only (no dark/light mode) */
+:root {
+  --color-background: var(--safari-dark-blue);
+  --color-background-soft: var(--vt-c-black-soft);
+  --color-background-mute: var(--vt-c-black-mute);
+
+  --color-border: var(--vt-c-divider-dark-2);
+  --color-border-hover: var(--vt-c-divider-dark-1);
+
+  --color-heading: var(--vt-c-text-dark-1);
+  --color-text: var(--vt-c-text-dark-2);
+
+  --color-primary: var(--safari-light-blue);
+  --color-accent: var(--safari-red);
+
+  --section-gap: 160px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--color-text);
+  background: var(--color-background);
+  transition: color 0.2s ease, background-color 0.2s ease;
+  line-height: 1.6;
+  font-family:
+    'Poppins',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

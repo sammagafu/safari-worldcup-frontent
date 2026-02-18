@@ -1,0 +1,36 @@
+@font-face {
+    font-family: 'Rawer';
+    src: url('Rawer-CondensedBold.woff2') format('woff2'),
+        url('Rawer-CondensedBold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Rawer';
+    src: url('Rawer-CondensedHeavy.woff2') format('woff2'),
+        url('Rawer-CondensedHeavy.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Rawer';
+    src: url('Rawer-CondensedBook.woff2') format('woff2'),
+        url('Rawer-CondensedBook.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Rawer';
+    src: url('Rawer-CondensedInline.woff2') format('woff2'),
+        url('Rawer-CondensedInline.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
