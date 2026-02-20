@@ -43,7 +43,7 @@ function followedAndContinue() {
         <!-- Social follow buttons -->
         <div class="onboarding-ctas flex-wrap">
           <a
-            href="https://instagram.com"
+            href="https://www.instagram.com/safarilager_tanzania/"
             target="_blank"
             rel="noopener noreferrer"
             class="onboarding-btn"
@@ -73,7 +73,7 @@ function followedAndContinue() {
           </a>
 
           <a
-            href="https://facebook.com"
+            href="https://www.facebook.com/SafariLagerTz"
             target="_blank"
             rel="noopener noreferrer"
             class="onboarding-btn bg-[#1877F2]! hover:bg-[#1877F2]/90!"

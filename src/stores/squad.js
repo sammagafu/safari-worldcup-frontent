@@ -177,27 +177,30 @@ export const useSquadStore = defineStore('squad', {
     /** Swap a bench player with a starting XI player. Allows cross-position swap to change formation (442/433/352). */
     substitute(benchPlayerId, starterPlayerId) {
       if (this.locked) return false
+      if (benchPlayerId === starterPlayerId) return false
       const benchPick = this.picks.find((p) => p.player?.id === benchPlayerId && BENCH_SLOTS.includes(p.slot))
       const starterPick = this.picks.find((p) => p.player?.id === starterPlayerId && !BENCH_SLOTS.includes(p.slot))
       if (!benchPick || !starterPick) return false
       const benchSlot = benchPick.slot
       const starterSlot = starterPick.slot
-      benchPick.slot = starterSlot
-      starterPick.slot = benchSlot
-      const starters = this.picks.filter((p) => !BENCH_SLOTS.includes(p.slot))
+      // Build new picks with swapped slots so Vue reactivity updates the UI
+      const startersAfterSwap = this.picks.map((p) => {
+        if (p.player?.id === benchPlayerId) return { ...p, slot: starterSlot }
+        if (p.player?.id === starterPlayerId) return { ...p, slot: benchSlot }
+        return { ...p }
+      })
+      const newStarters = startersAfterSwap.filter((p) => !BENCH_SLOTS.includes(p.slot))
       const posCounts = { GK: 0, DEF: 0, MID: 0, FWD: 0 }
-      starters.forEach((p) => {
+      newStarters.forEach((p) => {
         if (p.player?.position) posCounts[p.player.position] = (posCounts[p.player.position] || 0) + 1
       })
-      if (!isValidFormationCounts(posCounts)) {
-        benchPick.slot = benchSlot
-        starterPick.slot = starterSlot
-        return false
-      }
+      if (!isValidFormationCounts(posCounts)) return false
       // Reassign starter slots by position so formation display is correct (e.g. 433)
-      starters.forEach((p) => {
-        if (p.player?.position) p.slot = p.player.position
+      const withReassignedSlots = startersAfterSwap.map((p) => {
+        if (BENCH_SLOTS.includes(p.slot)) return p
+        return { ...p, slot: p.player?.position ?? p.slot }
       })
+      this.picks = withReassignedSlots
       return true
     },
     setCaptain(playerId) {

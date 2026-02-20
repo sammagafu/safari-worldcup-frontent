@@ -5,11 +5,11 @@ import bgWeb from '@/assets/bg/bg-web.jpg'
 </script>
 
 <template>
-  <div class="container px-4 py-5 py-md-5">
-    <!-- Hero -->
-    <section class="position-relative rounded-3 overflow-hidden mb-5 mb-md-5" style="min-height: 75vh;" aria-labelledby="hero-heading">
+  <div>
+    <!-- Hero: full-screen background, overlay, content in container -->
+    <section class="home-hero position-relative overflow-hidden" aria-labelledby="hero-heading">
       <div
-        class="position-absolute top-0 start-0 w-100 h-100 bg cover d-md-none"
+        class="position-absolute top-0 start-0 w-100 h-100 d-md-none"
         :style="{ backgroundImage: `url(${bgMobo})`, backgroundSize: 'cover', backgroundPosition: 'center' }"
         aria-hidden="true"
       />
@@ -18,8 +18,8 @@ import bgWeb from '@/assets/bg/bg-web.jpg'
         :style="{ backgroundImage: `url(${bgWeb})`, backgroundSize: 'cover', backgroundPosition: 'center' }"
         aria-hidden="true"
       />
-      <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-75" style="background: linear-gradient(180deg, rgba(13,11,92,0.85) 0%, rgba(13,11,92,0.6) 50%, rgba(13,11,92,0.9) 100%);" aria-hidden="true" />
-      <div class="position-relative z-1 container text-center py-5 py-md-5">
+      <div class="position-absolute top-0 start-0 w-100 h-100 home-hero-overlay" aria-hidden="true" />
+      <div class="position-relative z-1 container text-center py-5 py-md-5 px-4">
         <h2 id="hero-heading" class="display-4 display-lg-1 fw-bold text-white mb-3 mb-md-4">
           Compete. Win. Celebrate.
         </h2>
@@ -39,6 +39,7 @@ import bgWeb from '@/assets/bg/bg-web.jpg'
     </section>
 
     <!-- Dashboard preview -->
+    <div class="container px-4 py-5 py-md-5">
     <section class="card border border-white border-opacity-10 mb-5 py-4 py-md-5 px-4" aria-labelledby="dashboard-heading">
       <h2 id="dashboard-heading" class="visually-hidden">Your fantasy dashboard</h2>
       <div class="row g-4 g-md-4">
@@ -147,10 +148,25 @@ import bgWeb from '@/assets/bg/bg-web.jpg'
         </div>
       </div>
     </section>
+    </div>
   </div>
 </template>
 
 <style scoped>
+.home-hero {
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100vw;
+  max-width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+.home-hero-overlay {
+  background: linear-gradient(180deg, rgba(13, 11, 92, 0.85) 0%, rgba(13, 11, 92, 0.6) 50%, rgba(13, 11, 92, 0.9) 100%);
+}
 .card:hover {
   border-color: rgba(26, 82, 255, 0.4) !important;
 }

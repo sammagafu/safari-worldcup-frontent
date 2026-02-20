@@ -16,8 +16,10 @@ const teamFilter = ref('')
 const sortBy = ref('points') // 'points' | 'price' | 'name'
 const searchQuery = ref('')
 const gameweek = ref(currentGameweek)
-/** When set, user clicked a bench player to substitute in; click a starter of same position to swap. */
+/** When set, user clicked a bench player to substitute in; click a starter to swap. */
 const selectedForSub = ref(null) // { playerId, position, slot }
+/** Message when substitute fails (e.g. invalid formation). */
+const substituteError = ref('')
 /** When true, user clicked "Make Transfers" and must remove one player then add a replacement (uses 1 transfer). */
 const transferMode = ref(false)
 
@@ -47,6 +49,18 @@ const playersByPosition = computed(() => {
 })
 
 const formationConfig = computed(() => squad.formationConfig)
+
+/** Reactive set of player ids that can be added (so + button shows). Depends on squad.picks so it updates after remove. */
+const playersWithAddButton = computed(() => {
+  const picks = squad.picks
+  const budget = user.remainingBudget
+  return new Set(
+    playerPool.value
+      .filter((p) => squad.suggestedSlot(p) && p.price <= budget)
+      .map((p) => p.id)
+  )
+})
+
 const slots = computed(() => [
   { key: 'GK', label: 'Goalkeeper', max: 1 },
   { key: 'DEF', label: 'Defenders', max: formationConfig.value.DEF },
@@ -98,12 +112,18 @@ function startSubstitute(pick) {
 function confirmSubstitute(starterPick) {
   if (!selectedForSub.value || !starterPick?.player) return
   if (BENCH_SLOTS.includes(starterPick.slot)) return
+  substituteError.value = ''
   const ok = squad.substitute(selectedForSub.value.playerId, starterPick.player.id)
-  if (ok) selectedForSub.value = null
+  if (ok) {
+    selectedForSub.value = null
+  } else {
+    substituteError.value = 'That swap would create an invalid formation (need 4-4-2, 4-3-3 or 3-5-2). Try swapping with the same position.'
+  }
 }
 
 function cancelSubstitute() {
   selectedForSub.value = null
+  substituteError.value = ''
 }
 
 function doAutoPick() {
@@ -176,18 +196,6 @@ watch(() => squad.picks.length, (len) => {
 
 <template>
   <div class="container py-4 py-md-5 overflow-x-hidden">
-    <!-- Step 5 — Add players -->
-    <div v-if="user.isLoggedIn && user.ageVerified" class="d-flex align-items-center gap-2 mb-4">
-      <span class="rounded-circle bg-dark bg-opacity-25 text-primary d-flex align-items-center justify-content-center small fw-bold" style="width: 24px; height: 24px;">✓</span>
-      <span class="flex-grow-1" style="max-width: 12px; height: 1px; background: rgba(13,11,92,0.3);"></span>
-      <span class="rounded-circle bg-dark bg-opacity-25 text-primary d-flex align-items-center justify-content-center small fw-bold" style="width: 24px; height: 24px;">✓</span>
-      <span class="flex-grow-1" style="max-width: 12px; height: 1px; background: rgba(13,11,92,0.3);"></span>
-      <span class="rounded-circle bg-dark bg-opacity-25 text-primary d-flex align-items-center justify-content-center small fw-bold" style="width: 24px; height: 24px;">✓</span>
-      <span class="flex-grow-1" style="max-width: 12px; height: 1px; background: rgba(13,11,92,0.3);"></span>
-      <span class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center small fw-bold" style="width: 24px; height: 24px;">5</span>
-      <span class="small text-white text-opacity-70 ms-2">Step 5 — Add players{{ user.teamName ? ` · ${user.teamName}` : '' }}</span>
-    </div>
-
     <div class="fantasy-panel w-100 rounded-3 overflow-hidden">
       <section class="card border border-white border-opacity-25 overflow-hidden row g-0 flex-column flex-lg-row align-items-stretch squad-section" style="background: var(--fp-bg-elevated);">
         <!-- Left: Player Selection (same height as squad, list scrolls) -->
@@ -254,7 +262,7 @@ watch(() => squad.picks.length, (len) => {
                       <span class="text-2.5xs text-[var(--fp-text-secondary)] shrink-0" title="Price for budget">{{ formatPrice(player.price) }}</span>
                       <span class="text-2.5xs font-semibold text-[var(--fp-blue)] shrink-0 text-right" title="Points earned">{{ player.points ?? 0 }} pts</span>
                       <button
-                        v-if="squad.suggestedSlot(player) && player.price <= user.remainingBudget"
+                        v-if="playersWithAddButton.has(player.id)"
                         type="button"
                         class="size-10 sm:size-7 rounded-lg flex items-center justify-center text-lg sm:text-sm font-bold text-green-400 hover:bg-green-400/20 active:scale-95 transition shrink-0 touch-manipulation"
                         aria-label="Add to squad"
@@ -331,8 +339,9 @@ watch(() => squad.picks.length, (len) => {
                 v-if="selectedForSub"
                 class="mb-3 text-sm text-[var(--fp-blue)]"
               >
-                Click a starting player to swap with {{ squad.picks.find(p => p.player?.id === selectedForSub.playerId)?.player?.name }} (formation may change).
+                Click a starting XI player to swap with {{ squad.picks.find(p => p.player?.id === selectedForSub.playerId)?.player?.name }} (formation may change).
               </p>
+              <p v-if="substituteError" class="mb-3 text-sm text-danger">{{ substituteError }}</p>
               <div class="fantasy-pitch">
                 <div class="fantasy-pitch-lines" aria-hidden="true" />
                 <div class="relative grid gap-3 sm:gap-4 py-4 sm:py-6">
@@ -340,9 +349,13 @@ watch(() => squad.picks.length, (len) => {
                     <div
                       v-for="pick in row.picks"
                       :key="pick.player?.id"
+                      role="button"
+                      tabindex="0"
                       class="fantasy-player-card relative"
                       :class="{ 'ring-2 ring-[var(--fp-blue)] cursor-pointer': selectedForSub }"
                       @click="selectedForSub ? confirmSubstitute(pick) : null"
+                      @keydown.enter="selectedForSub ? confirmSubstitute(pick) : null"
+                      @keydown.space.prevent="selectedForSub ? confirmSubstitute(pick) : null"
                     >
                       <button
                         v-if="!squad.locked && !selectedForSub"
@@ -436,7 +449,7 @@ watch(() => squad.picks.length, (len) => {
 
             <!-- List View (compact list of picks by slot) -->
             <div v-show="viewMode === 'list'" class="p-5 sm:p-6 py-6 sm:py-7">
-              <div class="space-y-5">
+              <div class="d-flex flex-column gap-4">
                 <div
                   v-for="s in slots"
                   :key="s.key"
@@ -478,6 +491,7 @@ watch(() => squad.picks.length, (len) => {
 
             <div class="p-4 border-top border-white border-opacity-25 d-flex flex-column flex-sm-row flex-wrap gap-2 gap-sm-3 mt-auto">
               <button type="button" class="btn btn-primary btn-sm order-1" :disabled="squad.locked" @click="doAutoPick">Auto Pick</button>
+              <button v-if="!squad.locked && squad.picks.length === 15" type="button" class="btn btn-outline-primary btn-sm order-1" @click="doAutoPick" title="Shuffle squad with a new random 15">Re-auto pick</button>
               <button v-if="!squad.locked && squad.picks.length > 0" type="button" class="btn btn-outline-secondary btn-sm order-2" @click="clearSquad">Reset</button>
               <template v-if="transferMode">
                 <p class="small text-primary order-first order-sm-0 w-100 mb-0 me-sm-2">

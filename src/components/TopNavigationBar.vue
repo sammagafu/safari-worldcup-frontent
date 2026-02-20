@@ -24,10 +24,10 @@ watch(() => route.path, () => {
 
 <template>
   <nav class="navbar navbar-dark fixed-top border-bottom border-white border-opacity-10 bg-dark bg-opacity-95 py-2 py-lg-3" style="backdrop-filter: blur(12px);" aria-label="Main navigation">
-    <div class="container d-flex flex-wrap align-items-center justify-content-between gap-2">
+    <div class="navbar-container container d-flex flex-wrap align-items-center justify-content-between gap-2">
       <RouterLink to="/" class="navbar-brand d-flex align-items-center gap-2" aria-label="Safari Fantasy Home">
-        <img :src="logoUrl" class="d-block" style="height: 28px;" alt="" />
-        <span class="fw-bold">Safari Fantasy</span>
+        <img :src="logoUrl" class="d-inline-block align-text-top navbar-logo" alt="Safari Fantasy" />
+        <span class="font-display fw-bold d-inline-block align-text-bottom">Fantasy</span>
       </RouterLink>
 
       <button
@@ -53,11 +53,6 @@ watch(() => route.path, () => {
             </RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink to="/squad" class="nav-link px-3 py-2 rounded" :class="isActive('/squad') ? 'active text-primary' : 'text-white'">
-              Team creation
-            </RouterLink>
-          </li>
-          <li class="nav-item">
             <RouterLink to="/my-team" class="nav-link px-3 py-2 rounded" :class="isActive('/my-team') ? 'active text-primary' : 'text-white'">
               My Team
             </RouterLink>
@@ -73,21 +68,6 @@ watch(() => route.path, () => {
             </RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink to="/rewards" class="nav-link px-3 py-2 rounded" :class="isActive('/rewards') ? 'active text-primary' : 'text-white'">
-              Rewards
-            </RouterLink>
-          </li>
-          <li class="nav-item">
-            <RouterLink to="/follow" class="nav-link px-3 py-2 rounded" :class="isActive('/follow') ? 'active text-primary' : 'text-white'">
-              Follow Safari
-            </RouterLink>
-          </li>
-          <li class="nav-item">
-            <RouterLink to="/settings" class="nav-link px-3 py-2 rounded" :class="isActive('/settings') ? 'active text-primary' : 'text-white'">
-              Notifications
-            </RouterLink>
-          </li>
-          <li class="nav-item">
             <RouterLink to="/admin" class="nav-link px-3 py-2 rounded" :class="isActive('/admin') ? 'active text-primary' : 'text-white'">
               Admin
             </RouterLink>
@@ -97,23 +77,29 @@ watch(() => route.path, () => {
           <RouterLink v-if="!user.isLoggedIn" to="/login" class="btn btn-primary btn-sm fw-bold px-4">
             Get started
           </RouterLink>
-          <span v-else class="badge bg-secondary fw-bold py-2 px-3">
+          <span v-else class="font-display badge rounded-pill bg-danger text-white fw-bold py-2 px-3">
             {{ user.totalPoints }} pts
           </span>
         </div>
       </div>
     </div>
   </nav>
-  <div class="navbar-spacer" style="height: 56px;" aria-hidden="true" />
+  <div class="navbar-spacer" aria-hidden="true" />
 </template>
 
 <style scoped>
+.navbar-logo {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+}
 .navbar-spacer {
   pointer-events: none;
+  height: 88px; /* matches logo + padding */
 }
 @media (min-width: 992px) {
   .navbar-spacer {
-    height: 64px;
+    height: 96px;
   }
 }
 
@@ -154,8 +140,12 @@ watch(() => route.path, () => {
   justify-content: center;
 }
 
-/* Desktop: menu in a row, links in a row */
+/* Desktop: logo and links on same line, one row */
 @media (min-width: 992px) {
+  .navbar-container {
+    flex-wrap: nowrap;
+    align-items: center;
+  }
   .navbar-menu {
     display: flex !important;
     flex-basis: auto;
@@ -166,6 +156,7 @@ watch(() => route.path, () => {
     padding-top: 0;
     border-top: none;
     gap: 0;
+    align-items: center;
   }
   .navbar-menu .nav-links {
     flex-direction: row;

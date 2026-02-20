@@ -30,7 +30,7 @@ function nextGameweek() {
 <template>
   <div class="container py-4 py-md-5">
     <div class="row g-4">
-      <!-- Sidebar: Points & Rankings, My Team Badge, Fan League, My Leagues -->
+      <!-- Sidebar: Points & Rankings, Fan League, My Leagues -->
       <aside class="col-12 col-lg-4 col-xl-3">
         <div class="card mb-4">
           <div class="card-body">
@@ -54,19 +54,6 @@ function nextGameweek() {
             <div class="mb-2"><span class="text-white text-opacity-70">Overall rank:</span> <strong class="text-white">{{ overallRank.toLocaleString() }}</strong></div>
             <div class="mb-2"><span class="text-white text-opacity-70">Total players:</span> <strong class="text-white">{{ totalPlayers.toLocaleString() }}</strong></div>
             <div><span class="text-white text-opacity-70">Gameweek points:</span> <strong class="text-white">{{ gameweekPoints }}</strong></div>
-          </div>
-        </div>
-
-        <div class="card mb-4">
-          <div class="card-header bg-transparent border-white border-opacity-10 d-flex justify-content-between align-items-center py-3">
-            <h2 class="h6 fw-semibold text-white mb-0">My Team Badge</h2>
-          </div>
-          <div class="card-body text-center py-4">
-            <div class="rounded-circle border border-white border-opacity-25 d-inline-flex align-items-center justify-content-center mb-2 bg-dark" style="width: 80px; height: 80px;">
-              <span class="fs-2 text-white text-opacity-50">+</span>
-            </div>
-            <p class="small text-white text-opacity-80 mb-2">Generate team badge</p>
-            <button type="button" class="btn btn-outline-primary btn-sm">Generate Team Badge &gt;</button>
           </div>
         </div>
 
