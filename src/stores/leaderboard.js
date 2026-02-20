@@ -6,6 +6,7 @@ export const useLeaderboardStore = defineStore('leaderboard', {
     regional: [],
     bar: [],
     currentView: 'national', // national | regional | bar
+    selectedManagerId: null, // when set, show this manager's team
   }),
   actions: {
     setNational(entries) {
@@ -19,6 +20,12 @@ export const useLeaderboardStore = defineStore('leaderboard', {
     },
     setCurrentView(view) {
       this.currentView = view
+    },
+    setSelectedManager(id) {
+      this.selectedManagerId = id
+    },
+    clearSelectedManager() {
+      this.selectedManagerId = null
     },
   },
   getters: {

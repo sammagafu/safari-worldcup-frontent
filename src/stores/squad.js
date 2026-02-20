@@ -2,6 +2,8 @@ import { defineStore } from 'pinia'
 import { useUserStore } from './user'
 
 // Formations: 4-4-2, 4-3-3, 3-5-2. Bench = 1 sub per position (GKP, DEF, MID, FWD).
+// Max 3 players per country. 2 goalkeepers required (1 starter + 1 bench).
+const MAX_PLAYERS_PER_COUNTRY = 3
 const FORMATIONS = {
   '442': { GK: 1, DEF: 4, MID: 4, FWD: 2 },
   '433': { GK: 1, DEF: 4, MID: 3, FWD: 3 },
@@ -107,9 +109,21 @@ export const useSquadStore = defineStore('squad', {
         slotC.B_FWD === 1
       )
     },
+    /** Count of players per country (team) in current squad */
+    playersPerCountry: (state) => {
+      const counts = {}
+      state.picks.forEach((p) => {
+        const team = p.player?.team
+        if (team) counts[team] = (counts[team] || 0) + 1
+      })
+      return counts
+    },
     suggestedSlot: (state, getters) => (player) => {
       const pos = player.position
       if (!pos || pos === 'BENCH') return null
+      const team = player.team
+      const perCountry = getters?.playersPerCountry ?? {}
+      if (team && (perCountry[team] || 0) >= MAX_PLAYERS_PER_COUNTRY) return null
       const posCounts = getters?.starterPositionCounts ?? { GK: 0, DEF: 0, MID: 0, FWD: 0 }
       const slotC = getters?.slotCounts ?? getSlotCountsFromState(state)
       const cfg = getters?.formationConfig ?? FORMATIONS['442']
@@ -126,6 +140,8 @@ export const useSquadStore = defineStore('squad', {
       const user = useUserStore()
       if (this.totalCost + player.price > user.budget) return false
       if (this.picks.some((p) => p.player?.id === player.id)) return false
+      const perCountry = this.playersPerCountry
+      if (player.team && (perCountry[player.team] || 0) >= MAX_PLAYERS_PER_COUNTRY) return false
 
       const pos = player.position
       const c = this.slotCounts
@@ -263,12 +279,18 @@ export const useSquadStore = defineStore('squad', {
       let spent = 0
       const usedIds = new Set()
 
+      const teamCounts = {}
       for (const { slot, pos } of slots) {
-        const pool = byPos[pos].filter((p) => !usedIds.has(p.id) && spent + p.price <= BUDGET)
+        const pool = byPos[pos].filter((p) => {
+          if (usedIds.has(p.id) || spent + p.price > BUDGET) return false
+          const cnt = teamCounts[p.team] || 0
+          return cnt < MAX_PLAYERS_PER_COUNTRY
+        })
         if (pool.length === 0) return false
         const pick = pool[Math.floor(Math.random() * pool.length)]
         usedIds.add(pick.id)
         spent += pick.price
+        teamCounts[pick.team] = (teamCounts[pick.team] || 0) + 1
         this.picks.push({
           player: { ...pick },
           slot,

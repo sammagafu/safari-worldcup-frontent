@@ -4,9 +4,9 @@ import Footer from '@/components/Footer.vue'
 </script>
 
 <template>
-  <div class="min-h-screen min-h-dvh">
+  <div class="min-vh-100 overflow-x-hidden">
     <TopNavigationBar />
-    <main class="container mx-auto bg-transparent pt-16 pb-4 sm:pt-20 sm:pb-6 md:pt-20 md:pb-8">
+    <main class="py-4 py-md-5 pb-5">
       <slot />
     </main>
     <Footer />

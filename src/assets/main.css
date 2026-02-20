@@ -38,6 +38,11 @@
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.06), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+  --shadow-card: 0 4px 12px -2px rgb(0 0 0 / 0.12), 0 2px 6px -2px rgb(0 0 0 / 0.08);
+  --shadow-nav: 0 1px 0 0 rgb(255 255 255 / 0.06);
+
+  /* Surface overlay (for hero gradient) */
+  --surface-overlay: linear-gradient(180deg, rgba(13, 11, 92, 0.85) 0%, rgba(13, 11, 92, 0.6) 50%, rgba(13, 11, 92, 0.9) 100%);
 }
 
 @import './base.css';
@@ -57,10 +62,10 @@
 /* Corporate link */
 a {
   text-decoration: none;
-  color: var(--safari-light-blue);
+  color: white;
   transition: color 0.2s ease;
 }
-a:hover { color: var(--safari-light-blue); }
+a:hover { color: white; }
 a:focus-visible {
   outline: 2px solid var(--safari-light-blue);
   outline-offset: 2px;
@@ -74,10 +79,19 @@ input:focus-visible,
   outline-offset: 2px;
 }
 
-/* Rawer for headings only */
+/* Rawer for headings – always bold, font-size +2 */
 h1, h2, h3, h4, h5, h6, .font-display, [class*="heading"], .fp-heading {
   font-family: 'Rawer', ui-sans-serif, system-ui, sans-serif;
-  font-weight: 700;
+  font-weight: 700 !important;
+  font-size: calc(1em + 2px);
+}
+
+/* Rawer for buttons – always bold, font-size +2 */
+button, .btn-primary, .btn-white, .btn-accent, .nav-btn, .fp-pill,
+[role="button"], .font-display-button {
+  font-family: 'Rawer', ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700 !important;
+  font-size: calc(1em + 2px);
 }
 
 /* Hero landing: button and hover utilities */
@@ -87,9 +101,9 @@ h1, h2, h3, h4, h5, h6, .font-display, [class*="heading"], .fp-heading {
   justify-content: center;
   padding: 1rem 2rem;
   border-radius: 8px;
-  font-size: 17px;
-  font-weight: 600;
-  font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  font-size: 19px;
+  font-weight: 700;
+  font-family: 'Rawer', ui-sans-serif, system-ui, sans-serif;
   background: var(--safari-red);
   color: white;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07);
@@ -105,9 +119,9 @@ h1, h2, h3, h4, h5, h6, .font-display, [class*="heading"], .fp-heading {
   justify-content: center;
   padding: 1rem 2rem;
   border-radius: 8px;
-  font-size: 17px;
-  font-weight: 600;
-  font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  font-size: 19px;
+  font-weight: 700;
+  font-family: 'Rawer', ui-sans-serif, system-ui, sans-serif;
   background: #fff;
   color: #0f172a;
   border: 1px solid #cbd5e1;
@@ -139,9 +153,9 @@ h1, h2, h3, h4, h5, h6, .font-display, [class*="heading"], .fp-heading {
   justify-content: center;
   padding: 0.5rem 1.25rem;
   border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
-  font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  font-family: 'Rawer', ui-sans-serif, system-ui, sans-serif;
   color: var(--safari-dark-blue);
   border: 1px solid rgba(13, 11, 92, 0.3);
   background: transparent;
@@ -160,9 +174,9 @@ h1, h2, h3, h4, h5, h6, .font-display, [class*="heading"], .fp-heading {
   justify-content: center;
   padding: 0.35rem 0.75rem;
   border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
-  font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Rawer', ui-sans-serif, system-ui, sans-serif;
   text-decoration: none;
   transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
@@ -181,6 +195,22 @@ h1, h2, h3, h4, h5, h6, .font-display, [class*="heading"], .fp-heading {
 }
 .nav-btn-primary:hover {
   background: rgba(237, 28, 36, 0.9);
+}
+
+/* Top bar: ensure nav links are visible on desktop and when mobile menu is open */
+@media (min-width: 992px) {
+  #navbarMain {
+    display: flex !important;
+    flex-basis: auto;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+#navbarMain.collapse.show {
+  display: flex !important;
+  flex-direction: column;
+  align-items: stretch;
 }
 
 /* Mobile menu */
@@ -205,17 +235,35 @@ h1, h2, h3, h4, h5, h6, .font-display, [class*="heading"], .fp-heading {
   }
 }
 
-/* Fantasy panel: team / transfer / points (dark UI like reference) */
+/* Clean card – reusable surface */
+.card {
+  @apply rounded-xl border border-border-subtle bg-surface-elevated overflow-hidden transition-colors;
+  box-shadow: var(--shadow-sm);
+}
+.card:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* Page header – consistent typography */
+.page-header h1 {
+  @apply font-display text-2xl sm:text-3xl font-bold text-text-primary tracking-tight;
+  letter-spacing: -0.02em;
+}
+.page-header p {
+  @apply text-base text-text-secondary leading-relaxed mt-1;
+}
+
+/* Fantasy panel: team / transfer (Safari brand colors) */
 .fantasy-panel {
-  --fp-bg: #0f0f1a;
-  --fp-bg-elevated: #1a1a2e;
-  --fp-bg-surface: #252538;
-  --fp-border: rgba(255, 255, 255, 0.1);
+  --fp-bg: #0d0b5c;
+  --fp-bg-elevated: #151278;
+  --fp-bg-surface: #1e1a8a;
+  --fp-border: rgba(255, 255, 255, 0.15);
   --fp-text: #ffffff;
-  --fp-text-secondary: rgba(255, 255, 255, 0.85);
+  --fp-text-secondary: rgba(255, 255, 255, 0.9);
   --fp-text-muted: rgba(255, 255, 255, 0.6);
-  --fp-accent: #8b5cf6;
-  --fp-accent-hover: #a78bfa;
+  --fp-accent: #1a52ff;
+  --fp-accent-hover: #3d6dff;
   --fp-red: #ed1c24;
   --fp-blue: #1a52ff;
   background: var(--fp-bg);
@@ -224,8 +272,8 @@ h1, h2, h3, h4, h5, h6, .font-display, [class*="heading"], .fp-heading {
 
 .fantasy-panel .fp-heading {
   color: var(--fp-text);
-  font-weight: 700;
-  font-size: 1.125rem;
+  font-weight: 700 !important;
+  font-size: 1.25rem;
   font-family: 'Rawer', ui-sans-serif, system-ui, sans-serif;
 }
 
@@ -241,9 +289,9 @@ h1, h2, h3, h4, h5, h6, .font-display, [class*="heading"], .fp-heading {
   color: white;
   padding: 0.25rem 0.75rem;
   border-radius: 9999px;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 700 !important;
+  font-family: 'Rawer', ui-sans-serif, system-ui, sans-serif;
 }
 
 .fantasy-panel .fp-input,
@@ -266,7 +314,55 @@ h1, h2, h3, h4, h5, h6, .font-display, [class*="heading"], .fp-heading {
 .fantasy-panel .fp-select:focus {
   outline: none;
   border-color: var(--fp-accent);
-  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.25);
+  box-shadow: 0 0 0 2px rgba(26, 82, 255, 0.3);
+}
+
+/* Onboarding card – Flowbite-style layout with Safari theme */
+.onboarding-card {
+  @apply w-full text-center bg-surface-elevated p-6 border border-white/[0.08] rounded-lg shadow-sm;
+}
+.onboarding-card-fullscreen {
+  min-height: calc(100vh - 5rem);
+  min-height: calc(100dvh - 5rem);
+  @apply w-full rounded-none border-x-0 border-t-0 flex flex-col justify-center;
+}
+@media (min-width: 640px) {
+  .onboarding-card { @apply p-8; }
+}
+@media (min-width: 768px) {
+  .onboarding-card { @apply p-12; }
+}
+
+.onboarding-heading {
+  @apply mb-3 text-2xl tracking-tight font-semibold text-text-primary;
+}
+@media (min-width: 640px) {
+  .onboarding-heading { @apply text-3xl; }
+}
+
+.onboarding-body {
+  @apply mb-6 text-base text-text-secondary;
+}
+@media (min-width: 640px) {
+  .onboarding-body { @apply text-lg; }
+}
+
+.onboarding-ctas {
+  @apply flex flex-col sm:flex-row items-center justify-center gap-4;
+}
+
+.onboarding-btn {
+  @apply w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-3 bg-safari-dark-blue hover:bg-safari-dark-blue/90 text-white rounded-lg font-display font-bold focus:ring-4 focus:outline-none focus:ring-safari-light-blue/20 transition border-none cursor-pointer;
+}
+
+.onboarding-btn .btn-label {
+  @apply text-left;
+}
+.onboarding-btn .btn-label .btn-sub {
+  @apply block text-xs;
+}
+.onboarding-btn .btn-label .btn-main {
+  @apply block text-sm font-bold;
 }
 
 /* Pitch view – sizes via Tailwind theme (16 = 4rem, 18 = 4.5rem, 20 = 5rem) */
@@ -308,7 +404,7 @@ h1, h2, h3, h4, h5, h6, .font-display, [class*="heading"], .fp-heading {
 
 .fantasy-player-card:hover {
   border-color: var(--fp-accent);
-  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+  box-shadow: 0 0 0 2px rgba(26, 82, 255, 0.25);
 }
 
 .fantasy-player-card .jersey {
@@ -322,6 +418,9 @@ h1, h2, h3, h4, h5, h6, .font-display, [class*="heading"], .fp-heading {
   justify-content: center;
   font-size: 0.5625rem; /* 9px */
   color: var(--fp-text-muted);
+}
+.fantasy-player-card .jersey.jersey-kit {
+  background: transparent;
 }
 @media (min-width: 640px) {
   .fantasy-player-card .jersey {

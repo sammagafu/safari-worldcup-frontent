@@ -8,58 +8,54 @@ const rewards = ref([
 </script>
 
 <template>
-  <div class="w-full min-w-0 bg-transparent px-6 py-8 sm:px-8 sm:py-10 md:px-10 md:py-12">
-    <header class="mb-8 sm:mb-10">
-      <h1 class="text-xl sm:text-display-sm font-bold text-text-primary tracking-tight mb-2">
-        Rewards
-      </h1>
-      <p class="text-base text-text-secondary leading-relaxed">
-        Redeem your vouchers at partner bars. Scan the bar’s QR to join their league or redeem. 21+ only.
+  <div class="container py-4 py-md-5">
+    <header class="mb-5 mb-md-5">
+      <h1 class="h3 fw-bold text-white mb-1">Rewards</h1>
+      <p class="text-white text-opacity-80 mb-0">
+        Redeem your vouchers at partner bars. Scan the bar's QR to join their league or redeem. 21+ only.
       </p>
     </header>
 
-    <section class="rounded-lg border border-border-subtle bg-surface-elevated overflow-x-auto mb-10 sm:mb-12" aria-label="Your rewards">
-      <table class="w-full text-left min-w-80">
-        <thead>
-          <tr class="bg-safari-dark-blue text-white">
-            <th class="px-4 sm:px-5 py-3 sm:py-4 text-xs sm:text-3xs font-semibold">Type</th>
-            <th class="px-4 sm:px-5 py-3 sm:py-4 text-xs sm:text-3xs font-semibold">Description</th>
-            <th class="px-4 sm:px-5 py-3 sm:py-4 text-xs sm:text-3xs font-semibold">Status</th>
-            <th class="px-4 sm:px-5 py-3 sm:py-4 text-xs sm:text-3xs font-semibold">Redeemed at</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="r in rewards"
-            :key="r.id"
-            class="border-t border-border-subtle hover:bg-surface transition"
-          >
-            <td class="px-4 sm:px-5 py-3 sm:py-4 text-xs sm:text-[14px] font-medium text-text-primary">{{ r.type }}</td>
-            <td class="px-4 sm:px-5 py-3 sm:py-4 text-xs sm:text-[14px] text-text-secondary">{{ r.description }}</td>
-            <td class="px-4 sm:px-5 py-3 sm:py-4">
-              <span
-                class="inline-block px-2.5 py-1 rounded text-2.5xs sm:text-xs font-medium"
-                :class="r.status === 'Redeemed'
-                  ? 'bg-safari-dark-blue/10 text-safari-dark-blue'
-                  : 'bg-safari-red/10 text-safari-red'"
-              >
-                {{ r.status }}
-              </span>
-            </td>
-            <td class="px-4 sm:px-5 py-3 sm:py-4 text-xs sm:text-[14px] text-text-secondary">{{ r.bar || '—' }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
+    <div class="card mb-5 overflow-hidden">
+      <div class="table-responsive">
+        <table class="table table-hover table-dark mb-0" aria-label="Your rewards">
+          <thead>
+            <tr>
+              <th class="border-white border-opacity-10 px-3 py-3 small fw-semibold">Type</th>
+              <th class="border-white border-opacity-10 px-3 py-3 small fw-semibold">Description</th>
+              <th class="border-white border-opacity-10 px-3 py-3 small fw-semibold">Status</th>
+              <th class="border-white border-opacity-10 px-3 py-3 small fw-semibold">Redeemed at</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="r in rewards" :key="r.id">
+              <td class="px-3 py-3 small fw-medium text-white">{{ r.type }}</td>
+              <td class="px-3 py-3 small text-white text-opacity-85">{{ r.description }}</td>
+              <td class="px-3 py-3">
+                <span
+                  class="badge px-2 py-1 small"
+                  :class="r.status === 'Redeemed' ? 'bg-dark text-white' : 'bg-danger'"
+                >
+                  {{ r.status }}
+                </span>
+              </td>
+              <td class="px-3 py-3 small text-white text-opacity-85">{{ r.bar || '—' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-    <section class="rounded-lg border border-border-subtle bg-surface-elevated p-6 sm:p-8 md:p-10" aria-label="How to redeem">
-      <h2 class="text-sm sm:text-base font-semibold text-text-primary mb-4">How to redeem</h2>
-      <ol class="list-decimal list-inside text-sm text-text-secondary space-y-3">
-        <li>Get your reward code after winning (MOTM, weekly, or grand).</li>
-        <li>Visit a partner bar and show your code.</li>
-        <li>Bar scans your code; backend verifies and marks as redeemed.</li>
-        <li>Single use only. Play responsibly. 21+.</li>
-      </ol>
-    </section>
+    <div class="card border border-white border-opacity-10">
+      <div class="card-body p-4 p-md-5">
+        <h2 class="h6 fw-bold text-white mb-4">How to redeem</h2>
+        <ol class="text-white text-opacity-85 small mb-0 ps-3">
+          <li class="mb-2">Get your reward code after winning (MOTM, weekly, or grand).</li>
+          <li class="mb-2">Visit a partner bar and show your code.</li>
+          <li class="mb-2">Bar scans your code; backend verifies and marks as redeemed.</li>
+          <li>Single use only. Play responsibly. 21+.</li>
+        </ol>
+      </div>
+    </div>
   </div>
 </template>

@@ -7,8 +7,13 @@ export const useUserStore = defineStore('user', {
     isLoggedIn: false,
     ageVerified: false,
     termsAccepted: false,
+    ageBannerDismissed: false,
+    followBannerDismissed: false,
     region: null,
     favoriteTeam: null,
+    phoneNumber: null,
+    /** User's fantasy team name (set in team creation step 1). */
+    teamName: '',
     budget: BUDGET,
     transfersUsed: 0,
     freeTransfersThisWeek: 2,
@@ -33,6 +38,20 @@ export const useUserStore = defineStore('user', {
     },
     setFavoriteTeam(team) {
       this.favoriteTeam = team
+    },
+    setPhoneNumber(phone) {
+      this.phoneNumber = phone
+    },
+    setTeamName(name) {
+      this.teamName = (name || '').trim()
+    },
+    confirmAge() {
+      this.ageVerified = true
+      this.termsAccepted = true
+      this.ageBannerDismissed = true
+    },
+    dismissFollowBanner() {
+      this.followBannerDismissed = true
     },
     spendBudget(amount) {
       if (this.budget >= amount) {
@@ -62,6 +81,7 @@ export const useUserStore = defineStore('user', {
       this.budget = BUDGET
       this.transfersUsed = 0
       this.freeTransfersThisWeek = 2
+      // Optionally clear teamName for a full reset: this.teamName = ''
     },
   },
 })

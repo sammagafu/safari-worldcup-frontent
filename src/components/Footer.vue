@@ -5,9 +5,9 @@ defineOptions({
 </script>
 
 <template>
-  <footer class="border-t border-border-subtle bg-surface-elevated safe-area-inset-bottom">
-    <div class="container py-4 sm:py-5">
-      <p class="text-center text-xs sm:text-3xs text-text-muted px-2">
+  <footer class="border-top border-white border-opacity-10 bg-dark bg-opacity-90 py-4" style="backdrop-filter: blur(8px);">
+    <div class="container">
+      <p class="text-center text-white text-opacity-70 small mb-0">
         <slot>
           Safari Lager World Cup Fantasy 2026 · Play responsibly · 21+
         </slot>
